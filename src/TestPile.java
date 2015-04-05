@@ -1,45 +1,51 @@
 
-public class TestLList
+public class TestPile
 {
 	public static void main(String[] args)
 	{
-		LList<String> test1 = new LList<String>();
+		Pile test1 = new Pile();
 		
-		//empty list tests
+		Card card1 = new Card("ACE","CLUBS");
+		Card card2 = new Card("THREE","DIAMONDS");
+		Card card3 = new Card("FOUR","HEARTS");
+		Card card4 = new Card("QUEEN","HEARTS");
+		Card card5 = new Card("THREE","SPADES");
+		
+		//empty pile tests
 		testIsEmpty(test1, true);
 		testIsFull(test1, false);
 		testGetLength(test1, 0);
 		
-		//unempty list tests
-		testAdd(test1, "test1", true);
+		//unempty pile tests
+		testAdd(test1, card1, true);
 		testIsEmpty(test1, false);
 		testGetLength(test1, 1);
 		
 		//test adds
-		testAdd(test1, "test2", true);
+		testAdd(test1, card2, true);
 		testGetLength(test1, 2);
-		testAdd(test1, "test4", true);
+		testAdd(test1, card4, true);
 		testGetLength(test1, 3);
-		testAdd(test1, "test5", true);
+		testAdd(test1, card5, true);
 		testGetLength(test1, 4);
-		testAdd(test1, 3, "test3", true);
+		testAdd(test1, 3, card3, true);
 		testGetLength(test1, 5);
 		
 		//test getEntry
-		testGetEntry(test1, 1, "test1");
-		testGetEntry(test1, 2, "test2");
-		testGetEntry(test1, 3, "test3");
-		testGetEntry(test1, 4, "test4");
-		testGetEntry(test1, 5, "test5");
+		testGetEntry(test1, 1, card1);
+		testGetEntry(test1, 2, card2);
+		testGetEntry(test1, 3, card3);
+		testGetEntry(test1, 4, card4);
+		testGetEntry(test1, 5, card5);
 		testGetEntry(test1, 0, null);
 		testGetEntry(test1, 6, null);
 		
 		//test remove
-		testRemove(test1, 1, "test1");
+		testRemove(test1, 1, card1);
 		testGetLength(test1, 4);
-		testGetEntry(test1, 1, "test2");
-		testRemove(test1, 3, "test4");
-		testGetEntry(test1, 2, "test3");
+		testGetEntry(test1, 1, card2);
+		testRemove(test1, 3, card4);
+		testGetEntry(test1, 2, card3);
 		testGetLength(test1, 3);
 		
 		//test clear
@@ -48,28 +54,36 @@ public class TestLList
 		testGetLength(test1, 0);
 		
 		//test full
-		testGetCapacity(test1, 25);
+		test1.setCapacity(13);
+		testGetCapacity(test1, 13);
+		
 		for(int i=1;i<=test1.getCapacity();i++){
-			test1.add("test"+i);
+			test1.add(new Card(i,"SPADES"));
 		}
 		testIsFull(test1, true);
-		testAdd(test1, "test25", false);
+		testAdd(test1, new Card("ACE","CLUBS"), false);
 		
 		test1.display();
 		
 		//test contains and replace
-		testContains(test1, "test4", true);
-		testContains(test1, "test26", false);
-		testReplace(test1, 3, "test26", true);
-		testReplace(test1, 0, "test0", false);
+		testContains(test1, new Card("FOUR","SPADES"), true);
+		testContains(test1, new Card("JACK","DIAMONDS"), false);
+		testReplace(test1, 3, new Card("NINE","HEARTS"), true);
+		testReplace(test1, 0, new Card("ACE","DIAMONDS"), false);
+		
+		//test 
+		testGetEntry(test1, 4, new Card("FOUR","SPADES"));
+		
+		test1.shuffle();
+		test1.display();
 	}
 	
-	public static void testAdd(ListInterface<String> list, String test, boolean correct)
+	public static void testAdd(Pile pile, Card test, boolean correct)
 	{
 		System.out.println("Testing add method: ");
 		
-		System.out.println("Adding '"+test+"' to the list ... ");
-		boolean result = list.add(test);
+		System.out.println("Adding '"+test+"' to the pile ... ");
+		boolean result = pile.add(test);
 		if(result){
 			System.out.print("Add Success: ");
 		}else{
@@ -85,12 +99,12 @@ public class TestLList
 		System.out.println();
 	}
 	
-	public static void testAdd(ListInterface<String> list, int position, String test, boolean correct)
+	public static void testAdd(Pile pile, int position, Card test, boolean correct)
 	{
 		System.out.println("Testing add method: ");
 		
-		System.out.print("Adding '"+test+"' to the list ... ");
-		if(list.add(position,test)==correct){
+		System.out.print("Adding '"+test+"' to the pile ... ");
+		if(pile.add(position,test)==correct){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -100,14 +114,14 @@ public class TestLList
 	}
 	
 	
-	public static void testRemove(ListInterface<String> list, int position, String correct)
+	public static void testRemove(Pile pile, int position, Card correct)
 	{
 		System.out.println("Testing remove method: ");
 		
 		System.out.println("Removing entry at position "+position+" ... ");
-		String result = list.remove(position);
+		Card result = pile.remove(position);
 		System.out.print("Remove method returned "+result+": ");
-		if(result!=null){
+		if(result.equals(correct)){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -117,14 +131,14 @@ public class TestLList
 	}
 	
 	
-	public static void testClear(ListInterface<String> list)
+	public static void testClear(Pile pile)
 	{
 		System.out.println("Testing clear method: ");
 		
-		list.clear();
+		pile.clear();
 		
-		System.out.print("Checking if list is cleared: ");
-		if(list.isEmpty()){
+		System.out.print("Checking if pile is cleared: ");
+		if(pile.isEmpty()){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -134,17 +148,17 @@ public class TestLList
 	}
 	
 	
-	public static void testIsEmpty(ListInterface<String> list, boolean correct)
+	public static void testIsEmpty(Pile pile, boolean correct)
 	{	
 		System.out.print("Testing isEmpty method with ");
 		if(correct){
-			System.out.println("an empty list:");
+			System.out.println("an empty pile:");
 		}else{
-			System.out.println("a list that isn't empty:");
+			System.out.println("a pile that isn't empty:");
 		}
 		
-		System.out.print("isEmpty method returns "+list.isEmpty()+": ");
-		if(list.isEmpty()==correct){
+		System.out.print("isEmpty method returns "+pile.isEmpty()+": ");
+		if(pile.isEmpty()==correct){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -153,17 +167,17 @@ public class TestLList
 		System.out.println();
 	}
 	
-	public static void testIsFull(ListInterface<String> list, boolean correct)
+	public static void testIsFull(Pile pile, boolean correct)
 	{
 		System.out.print("Testing isFull method with ");
 		if(correct){
-			System.out.println("a full list:");
+			System.out.println("a full pile:");
 		}else{
-			System.out.println("a list that isn't full:");
+			System.out.println("a pile that isn't full:");
 		}
 		
-		System.out.print("isFull method returns "+list.isFull()+": ");
-		if(list.isFull()==correct){
+		System.out.print("isFull method returns "+pile.isFull()+": ");
+		if(pile.isFull()==correct){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -172,12 +186,12 @@ public class TestLList
 		System.out.println();
 	}
 	
-	public static void testGetLength(ListInterface<String> list, int correct)
+	public static void testGetLength(Pile pile, int correct)
 	{
-		System.out.println("Testing getLength method of a list with a length of "+correct+":");
+		System.out.println("Testing getLength method of a pile with a length of "+correct+":");
 		
-		System.out.print("getLength method returns "+list.getLength()+": ");
-		if(list.getLength()==correct){
+		System.out.print("getLength method returns "+pile.getLength()+": ");
+		if(pile.getLength()==correct){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -186,12 +200,12 @@ public class TestLList
 		System.out.println();
 	}
 	
-	public static void testGetCapacity(ListInterface<String> list, int correct)
+	public static void testGetCapacity(Pile pile, int correct)
 	{
-		System.out.println("Testing getCapacity method for a list with a capacity of "+correct+":");
+		System.out.println("Testing getCapacity method for a pile with a capacity of "+correct+":");
 		
-		System.out.print("getCpacity method returns "+list.getCapacity()+": ");
-		if(list.getCapacity()==correct){
+		System.out.print("getCpacity method returns "+pile.getCapacity()+": ");
+		if(pile.getCapacity()==correct){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -200,11 +214,11 @@ public class TestLList
 		System.out.println();
 	}
 	
-	public static void testGetEntry(ListInterface<String> list, int position, String correct)
+	public static void testGetEntry(Pile pile, int position, Card correct)
 	{
 		System.out.println("Testing getEntry method for entry at position "+position+":");
 		
-		String result = list.getEntry(position);
+		Card result = pile.getEntry(position);
 		System.out.print("getEntry method returns "+result+": ");
 		
 		if(result==null && correct==null){
@@ -222,12 +236,12 @@ public class TestLList
 		System.out.println();
 	}
 	
-	public static void testReplace(ListInterface<String> list, int position, String test, boolean correct)
+	public static void testReplace(Pile pile, int position, Card test, boolean correct)
 	{
 		System.out.println("Testing replace method: ");
 		
 		System.out.println("Replacing entry at position "+position+" with '"+test+"' ... ");
-		boolean result = list.replace(position, test);
+		boolean result = pile.replace(position, test);
 		
 		if(result){
 			System.out.print("Replace Success: ");
@@ -244,12 +258,12 @@ public class TestLList
 		System.out.println();
 	}
 	
-	public static void testContains(ListInterface<String> list, String test, boolean correct)
+	public static void testContains(Pile pile, Card test, boolean correct)
 	{
 		System.out.println("Testing contains method for the entry '"+test+"': ");
 		
 		System.out.println("Searching for entry '"+test+"' ... ");
-		boolean result = list.contains(test);
+		boolean result = pile.contains(test);
 		if(result){
 			System.out.print("Search Success: ");
 		}else{

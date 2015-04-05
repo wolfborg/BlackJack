@@ -4,7 +4,7 @@
  * @author chaplind
  * @param <E>
  **********************************************************************/
-public class LList<E> implements ListInterface<E>
+public class DLList<E> implements ListInterface<E>
 {
 	/*
 	 * Creates a Node for the Linked List.
@@ -86,7 +86,7 @@ public class LList<E> implements ListInterface<E>
 	 * Default constructor which creates an empty Linked List and calls
 	 * a constructor for a Linked List with a default initial capacity.
 	 *******************************************************************/
-	public LList()
+	public DLList()
 	{
 		this(DEFAULT_CAPACITY);
 	}
@@ -98,7 +98,7 @@ public class LList<E> implements ListInterface<E>
 	 * 
 	 * @param capacity	int: The initial capacity of the Linked List.
 	 *******************************************************************/
-	public LList(int initialCapacity)
+	public DLList(int initialCapacity)
 	{
 		capacity = initialCapacity;
 		head = null;
