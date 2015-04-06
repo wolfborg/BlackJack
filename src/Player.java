@@ -4,6 +4,7 @@ public class Player
 	private String name;
 	private Deck deck;
 	private Hand hand;
+	private boolean turn;
 	
 	public Player(String playerName, Deck gameDeck)
 	{
@@ -19,8 +20,6 @@ public class Player
 		hand.add(card);
 		deck.remove(1);
 		
-		
-		
 		if(show){
 			System.out.println(name+" draws ... "+card+"\n");
 		}else{
@@ -35,12 +34,13 @@ public class Player
 	
 	public void stand()
 	{
-		
+		turn = false;
 	}
 	
 	public void fold()
 	{
-		
+		hand.clear();
+		turn = false;
 	}
 	
 	public String getName()
@@ -48,14 +48,19 @@ public class Player
 		return name;
 	}
 	
-	public Deck getDeck()
-	{
-		return deck;
-	}
-	
 	public Hand getHand()
 	{
 		return hand;
+	}
+	
+	public boolean isTurn()
+	{
+		return turn;
+	}
+	
+	public void setTurn(boolean newTurn)
+	{
+		turn = newTurn;
 	}
 	
 	public static void main(String[] args)
