@@ -60,7 +60,7 @@ public class Pile
 		}
 	}
 	
-	private CardNode getNodeAt(int position)
+	private CardNode getCardAt(int position)
 	{
 		CardNode result = null;
 		
@@ -171,7 +171,7 @@ public class Pile
 						topCard = newNode;
 					}
 				}else{
-					CardNode nodeAfter = getNodeAt(newPosition);
+					CardNode nodeAfter = getCardAt(newPosition);
 					CardNode nodeBefore = nodeAfter.prev;
 		
 					CardNode newNode = new CardNode(newEntry,nodeAfter,nodeBefore);
@@ -222,7 +222,7 @@ public class Pile
 						bottomCard = bottomCard.prev;
 					}
 				}else{
-					CardNode nodeToRemove = getNodeAt(givenPosition);
+					CardNode nodeToRemove = getCardAt(givenPosition);
 					CardNode nodeBefore = nodeToRemove.prev;
 					CardNode nodeAfter = nodeToRemove.next;
 					
@@ -265,7 +265,7 @@ public class Pile
 		
 		if(!isEmpty()){
 			if(givenPosition>=1 && givenPosition<=nCards){
-				CardNode node = getNodeAt(givenPosition);
+				CardNode node = getCardAt(givenPosition);
 				node.data = newEntry;
 				result = true;
 			}
@@ -287,7 +287,7 @@ public class Pile
 		
 		if(!isEmpty()){
 			if(givenPosition>=1 && givenPosition<=nCards){
-				result = getNodeAt(givenPosition).data;
+				result = getCardAt(givenPosition).data;
 			}
 		}
 		
@@ -394,7 +394,7 @@ public class Pile
 	{
 		if(!isEmpty()){
 			for(int i=1;i<nCards+1;i++){
-				System.out.println("Entry "+i+": "+getCard(i));
+				System.out.println("Card "+i+": "+getCard(i));
 			}
 		}else{
 			System.out.println("Pile is emtpy.");
