@@ -19,4 +19,13 @@ public class Hand extends Pile
 	{
 		total = newTotal;
 	}
+	
+	public void clear()
+	{
+		while(!isEmpty()){
+			remove(1);
+		}
+		
+		total = 0;
+	}
 }

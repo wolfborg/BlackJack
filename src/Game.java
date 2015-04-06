@@ -4,11 +4,10 @@ public class Game
 {
 	static Scanner keyboard = new Scanner(System.in);
 	private Deck deck;
-	private Player dealer;
+	private Player player, dealer;
 	
 	public static void main(String[] args)
 	{
-		
 		System.out.print("Enter name: ");
 		String playerName = keyboard.next();
 		System.out.println();
@@ -17,9 +16,10 @@ public class Game
 	}
 	
 	
-	public Game(Player player)
+	public Game(Player gamePlayer)
 	{
 		deck = new Deck();
+		player = gamePlayer;
 		dealer = new Player("Dealer");
 		
 		draw(player,false);
@@ -32,8 +32,7 @@ public class Game
 		   ((player.getHand().getCard(1).equals("ACE of SPADES"))&&
 			(player.getHand().getCard(2).equals("JACK of SPADES")))){
 			System.out.println("BLACKJACK");
-			System.out.println("YOU WIN");
-			System.out.println("GAME OVER");
+			System.out.println(player.getName()+" WINS");
 			System.exit(0);
 		}
 		
@@ -42,28 +41,61 @@ public class Game
 		while(player.isTurn()){
 			System.out.println("Dealer's Hand:");
 			dealer.getHand().display();
+			System.out.println();
 			printHand(player);
 			System.out.println();
 			command(player);
 		}
 		
-		if((dealer.getHand().getTotal())>player.getHand().getTotal()){
-			printHand(dealer);
-			System.out.println("YOU LOSE");
-			System.out.println("GAME OVER");
-			System.exit(0);
-		}else{
+		for(int i=1;i<=dealer.getHand().getNumberOfCards();i++){
+			dealer.getHand().getCard(i).setHidden(false);
+		}
+		
+		printHand(dealer);
+		
+		if((dealer.getHand().getTotal())>(player.getHand().getTotal())){
+			System.out.println("DEALER'S HAND WINS");
+			lose(player);
+		}else if((dealer.getHand().getTotal())<(player.getHand().getTotal())){
 			while((dealer.getHand().getTotal())<(player.getHand().getTotal())){
 				hit(dealer);
 			}
 			
-			System.out.println("DEALER HAND WINS");
-			System.out.println("YOU LOSE");
-			System.out.println("GAME OVER");
-			System.exit(0);
+			System.out.println("DEALER'S HAND WINS");
+			lose(player);
+		}else{
+			System.out.println("TIE");
+			System.out.println();
+			playAgain();
 		}
+	}
+	
+	public void playAgain()
+	{
+		System.out.print("Play Again?(y/n): ");
+		String answer = keyboard.next();
+		answer = answer.toLowerCase();
 		
-		
+		if(answer.equals("y")||answer.equals("yes")){
+			player.getHand().clear();
+			dealer.getHand().clear();
+			deck.clear();
+			System.out.println();
+			new Game(player);
+		}else if(answer.equals("n")||answer.equals("no")){
+			System.exit(0);
+		}else{
+			System.out.println("Invalid Response");
+			System.out.println();
+			playAgain();
+		}
+	}
+	
+	public void lose(Player player)
+	{
+		System.out.println("YOU LOSE");
+		System.out.println();
+		playAgain();
 	}
 	
 	public int calculate(Player player)
@@ -118,15 +150,11 @@ public class Game
 	{
 		draw(player,false);
 		
-		if(!player.equals(dealer)){
-			printHand(dealer);
-			printHand(player);
-			
+		if(!player.equals(dealer)){	
 			if(isBust(player)){
+				printHand(player);
 				System.out.println("YOU BUST");
-				System.out.println("YOU LOSE");
-				System.out.println("GAME OVER");
-				System.exit(0);
+				lose(player);
 			}
 		}else{
 			printHand(player);
@@ -134,8 +162,8 @@ public class Game
 			if(isBust(dealer)){
 				System.out.println("DEALER BUST");
 				System.out.println("YOU WIN");
-				System.out.println("GAME OVER");
-				System.exit(0);
+				System.out.println();
+				playAgain();
 			}
 		}
 	}
