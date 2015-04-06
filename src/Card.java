@@ -7,6 +7,7 @@ public class Card implements Comparable<Object>
 	private boolean face;
 	private Card previous;
 	private Card next;
+	private boolean hidden;
 	
 	public Card()
 	{
@@ -15,6 +16,7 @@ public class Card implements Comparable<Object>
 	
 	public Card(int cardRank, int cardSuit)
 	{
+		rankValue = cardRank;
 		face = false;
 		
 		switch (cardRank){
@@ -44,6 +46,7 @@ public class Card implements Comparable<Object>
 		
 		previous = null;
 		next = null;
+		hidden = true;
 	}
 	
 	public Card(String cardRank, String cardSuit)
@@ -79,6 +82,7 @@ public class Card implements Comparable<Object>
 		
 		previous = null;
 		next = null;
+		hidden = true;
 	}
 	
 	
@@ -114,6 +118,7 @@ public class Card implements Comparable<Object>
 		
 		previous = null;
 		next = null;
+		hidden = true;
 	}
 	
 	
@@ -149,14 +154,19 @@ public class Card implements Comparable<Object>
 	
 		previous = null;
 		next = null;
+		hidden = true;
 	}
 	
 	public String toString()
 	{
-		if(rank.equals("JOKER") || suit.equals("JOKER")){
-			return "JOKER";
+		if(!isHidden()){
+			if(rank.equals("JOKER") || suit.equals("JOKER")){
+				return "JOKER";
+			}else{
+				return rank+" of "+suit;	
+			}
 		}else{
-			return rank+" of "+suit;	
+			return "HIDDEN";
 		}
 	}
 	
@@ -292,6 +302,11 @@ public class Card implements Comparable<Object>
 		next = newNext;
 	}
 	
+	public void setHidden(boolean newHidden)
+	{
+		hidden = newHidden;
+	}
+	
 	public String getRank()
 	{
 		return rank;
@@ -320,5 +335,10 @@ public class Card implements Comparable<Object>
 	public Card getNext()
 	{
 		return next;
+	}
+	
+	public boolean isHidden()
+	{
+		return hidden;
 	}
 }

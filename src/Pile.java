@@ -399,8 +399,6 @@ public class Pile
 		}else{
 			System.out.println("Pile is empty.");
 		}
-		
-		System.out.println();
 	}
 	
 	public void shuffle(){
