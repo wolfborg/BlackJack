@@ -14,44 +14,44 @@ public class TestPile
 		//empty pile tests
 		testIsEmpty(test1, true);
 		testIsFull(test1, false);
-		testGetLength(test1, 0);
+		testGetNumberOfCards(test1, 0);
 		
 		//unempty pile tests
 		testAdd(test1, card1, true);
 		testIsEmpty(test1, false);
-		testGetLength(test1, 1);
+		testGetNumberOfCards(test1, 1);
 		
 		//test adds
 		testAdd(test1, card2, true);
-		testGetLength(test1, 2);
+		testGetNumberOfCards(test1, 2);
 		testAdd(test1, card4, true);
-		testGetLength(test1, 3);
+		testGetNumberOfCards(test1, 3);
 		testAdd(test1, card5, true);
-		testGetLength(test1, 4);
+		testGetNumberOfCards(test1, 4);
 		testAdd(test1, 3, card3, true);
-		testGetLength(test1, 5);
+		testGetNumberOfCards(test1, 5);
 		
-		//test getEntry
-		testGetEntry(test1, 1, card1);
-		testGetEntry(test1, 2, card2);
-		testGetEntry(test1, 3, card3);
-		testGetEntry(test1, 4, card4);
-		testGetEntry(test1, 5, card5);
-		testGetEntry(test1, 0, null);
-		testGetEntry(test1, 6, null);
+		//test getCard
+		testgetCard(test1, 1, card1);
+		testgetCard(test1, 2, card2);
+		testgetCard(test1, 3, card3);
+		testgetCard(test1, 4, card4);
+		testgetCard(test1, 5, card5);
+		testgetCard(test1, 0, null);
+		testgetCard(test1, 6, null);
 		
 		//test remove
 		testRemove(test1, 1, card1);
-		testGetLength(test1, 4);
-		testGetEntry(test1, 1, card2);
+		testGetNumberOfCards(test1, 4);
+		testgetCard(test1, 1, card2);
 		testRemove(test1, 3, card4);
-		testGetEntry(test1, 2, card3);
-		testGetLength(test1, 3);
+		testgetCard(test1, 2, card3);
+		testGetNumberOfCards(test1, 3);
 		
 		//test clear
 		testClear(test1);
 		testIsEmpty(test1, true);
-		testGetLength(test1, 0);
+		testGetNumberOfCards(test1, 0);
 		
 		//test full
 		test1.setCapacity(13);
@@ -71,11 +71,15 @@ public class TestPile
 		testReplace(test1, 3, new Card("NINE","HEARTS"), true);
 		testReplace(test1, 0, new Card("ACE","DIAMONDS"), false);
 		
-		//test 
-		testGetEntry(test1, 4, new Card("FOUR","SPADES"));
+		//test shuffle
+		System.out.println("Pile before shuffle:");
+		test1.display();
 		
 		test1.shuffle();
+		System.out.println("Pile after shuffle:");
 		test1.display();
+		
+		System.out.println(test1.getTopCard());
 	}
 	
 	public static void testAdd(Pile pile, Card test, boolean correct)
@@ -186,12 +190,12 @@ public class TestPile
 		System.out.println();
 	}
 	
-	public static void testGetLength(Pile pile, int correct)
+	public static void testGetNumberOfCards(Pile pile, int correct)
 	{
-		System.out.println("Testing getLength method of a pile with a length of "+correct+":");
+		System.out.println("Testing getNumberOfCards method of a pile with a NumberOfCards of "+correct+":");
 		
-		System.out.print("getLength method returns "+pile.getLength()+": ");
-		if(pile.getLength()==correct){
+		System.out.print("getNumberOfCards method returns "+pile.getNumberOfCards()+": ");
+		if(pile.getNumberOfCards()==correct){
 			System.out.println("OK");
 		}else{
 			System.out.println("ERROR");
@@ -214,12 +218,12 @@ public class TestPile
 		System.out.println();
 	}
 	
-	public static void testGetEntry(Pile pile, int position, Card correct)
+	public static void testgetCard(Pile pile, int position, Card correct)
 	{
-		System.out.println("Testing getEntry method for entry at position "+position+":");
+		System.out.println("Testing getCard method for entry at position "+position+":");
 		
-		Card result = pile.getEntry(position);
-		System.out.print("getEntry method returns "+result+": ");
+		Card result = pile.getCard(position);
+		System.out.print("getCard method returns "+result+": ");
 		
 		if(result==null && correct==null){
 			System.out.println("OK");

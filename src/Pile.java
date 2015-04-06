@@ -11,18 +11,18 @@ public class Pile
 	/*
 	 * Creates a Node for the Linked Pile.
 	 */
-	private class DNode
+	private class CardNode
 	{
 		private Card data;
-		private DNode next;
-		private DNode prev;
+		private CardNode next;
+		private CardNode prev;
 		
 		
 		/*********************************************************
 		 * Default constructor which creates an empty Node that
 		 * is unattached to the Linked Pile.
 		 *********************************************************/
-		private DNode()
+		private CardNode()
 		{
 			this(null);
 		}
@@ -35,7 +35,7 @@ public class Pile
 		 * @param dataPortion	E: The data of the new Node in the Linked Pile.
 		 * @param nextNode		Node: The next Node to be referenced by the new Node.
 		 *****************************************************************************/
-		private DNode(Card dataPortion)
+		private CardNode(Card dataPortion)
 		{
 			data = dataPortion;
 			next = null;
@@ -52,7 +52,7 @@ public class Pile
 		 * @param nextNode		Node: The next Node to be referenced by the new Node.
 		 * @param prevNode		Node: The previous Node to be referenced by the new Node.
 		 **********************************************************************************/
-		private DNode(Card dataPortion, DNode nextNode, DNode prevNode)
+		private CardNode(Card dataPortion, CardNode nextNode, CardNode prevNode)
 		{
 			data = dataPortion;
 			next = nextNode;
@@ -60,17 +60,17 @@ public class Pile
 		}
 	}
 	
-	private DNode getNodeAt(int position)
+	private CardNode getNodeAt(int position)
 	{
-		DNode result = null;
+		CardNode result = null;
 		
-		if(!isEmpty() && position>=1 && position<=length){
+		if(!isEmpty() && position>=1 && position<=nCards){
 			if(position==1){
-				result = head;
-			}else if(position==length){
-				result = tail;
+				result = topCard;
+			}else if(position==nCards){
+				result = bottomCard;
 			}else{
-				result = head;
+				result = topCard;
 				for(int i=1;i<position;i++){
 					result = result.next;
 				}
@@ -80,8 +80,8 @@ public class Pile
 		return result;
 	}
 	
-	private DNode head, tail;
-	private int length, capacity;
+	private CardNode topCard, bottomCard;
+	private int nCards, capacity;
 	private static int DEFAULT_CAPACITY = 25;
 	
 	/*******************************************************************
@@ -96,16 +96,16 @@ public class Pile
 	
 	/*******************************************************************
 	 * Constructor which creates a Linked Pile with a specified initial
-	 * capacity and a head and tail set to null and a length of zero.
+	 * capacity and a topCard and bottomCard set to null and a nCards of zero.
 	 * 
 	 * @param capacity	int: The initial capacity of the Linked Pile.
 	 *******************************************************************/
 	public Pile(int initialCapacity)
 	{
 		capacity = initialCapacity;
-		head = null;
-		tail = null;
-		length = 0;
+		topCard = null;
+		bottomCard = null;
+		nCards = 0;
 	}
 	
 	
@@ -121,18 +121,18 @@ public class Pile
 		boolean result = false;
 		
 		if(!isFull()){
-			DNode newNode = new DNode(newEntry);
+			CardNode newNode = new CardNode(newEntry);
 
 			if(!isEmpty()){
-				newNode.prev = tail;
-				tail.next = newNode;
-				tail = newNode;
+				newNode.prev = bottomCard;
+				bottomCard.next = newNode;
+				bottomCard = newNode;
 			}else{
-				head = newNode;
-				tail = newNode;
+				topCard = newNode;
+				bottomCard = newNode;
 			}
 			
-			length++;
+			nCards++;
 			result = true;
 		}
 		
@@ -154,33 +154,33 @@ public class Pile
 	{
 		boolean result = false;
 		
-		if(newPosition>=1 && newPosition<=length+1){
+		if(newPosition>=1 && newPosition<=nCards+1){
 			if(!isFull()){
 				if(newPosition==1){
-					DNode newNode = new DNode(newEntry,head,null);
-					head.prev = newNode;
-					head = newNode;
-					if(length==0){
-						tail = newNode;
+					CardNode newNode = new CardNode(newEntry,topCard,null);
+					topCard.prev = newNode;
+					topCard = newNode;
+					if(nCards==0){
+						bottomCard = newNode;
 					}
-				}else if(newPosition==length+1){
-					DNode newNode = new DNode(newEntry,null,tail);
-					tail.next = newNode;
-					tail = newNode;
-					if(length==0){
-						head = newNode;
+				}else if(newPosition==nCards+1){
+					CardNode newNode = new CardNode(newEntry,null,bottomCard);
+					bottomCard.next = newNode;
+					bottomCard = newNode;
+					if(nCards==0){
+						topCard = newNode;
 					}
 				}else{
-					DNode nodeAfter = getNodeAt(newPosition);
-					DNode nodeBefore = nodeAfter.prev;
+					CardNode nodeAfter = getNodeAt(newPosition);
+					CardNode nodeBefore = nodeAfter.prev;
 		
-					DNode newNode = new DNode(newEntry,nodeAfter,nodeBefore);
+					CardNode newNode = new CardNode(newEntry,nodeAfter,nodeBefore);
 					
 					nodeAfter.prev = newNode;
 					nodeBefore.next = newNode;
 				}
 				
-				length++;
+				nCards++;
 				result = true;
 			}
 		}
@@ -201,30 +201,30 @@ public class Pile
 	{
 		Card result = null;
 		
-		if(givenPosition>=1 && givenPosition<=length){
+		if(givenPosition>=1 && givenPosition<=nCards){
 			if(!isEmpty()){
 				if(givenPosition == 1){
-					result = head.data;
+					result = topCard.data;
 					
-					if(length==1){
-						head = null;
-						tail = null;
+					if(nCards==1){
+						topCard = null;
+						bottomCard = null;
 					}else{
-						head = head.next;
+						topCard = topCard.next;
 					}
 					
-				}else if(givenPosition == length){
-					result = tail.data;
-					if(length==1){
-						head = null;
-						tail = null;
+				}else if(givenPosition == nCards){
+					result = bottomCard.data;
+					if(nCards==1){
+						topCard = null;
+						bottomCard = null;
 					}else{
-						tail = tail.prev;
+						bottomCard = bottomCard.prev;
 					}
 				}else{
-					DNode nodeToRemove = getNodeAt(givenPosition);
-					DNode nodeBefore = nodeToRemove.prev;
-					DNode nodeAfter = nodeToRemove.next;
+					CardNode nodeToRemove = getNodeAt(givenPosition);
+					CardNode nodeBefore = nodeToRemove.prev;
+					CardNode nodeAfter = nodeToRemove.next;
 					
 					nodeBefore.next = nodeAfter;
 					nodeAfter.prev = nodeBefore;
@@ -232,7 +232,7 @@ public class Pile
 					result = nodeToRemove.data;
 				}
 				
-				length--;
+				nCards--;
 			}
 		}
 		
@@ -264,8 +264,8 @@ public class Pile
 		boolean result = false;
 		
 		if(!isEmpty()){
-			if(givenPosition>=1 && givenPosition<=length){
-				DNode node = getNodeAt(givenPosition);
+			if(givenPosition>=1 && givenPosition<=nCards){
+				CardNode node = getNodeAt(givenPosition);
 				node.data = newEntry;
 				result = true;
 			}
@@ -281,12 +281,12 @@ public class Pile
 	 * @param givenPosition	int: The specified position of the entry to return.
 	 * @return E:	The specified entry.
 	 ******************************************************************************/
-	public Card getEntry(int givenPosition)
+	public Card getCard(int givenPosition)
 	{
 		Card result = null;
 		
 		if(!isEmpty()){
-			if(givenPosition>=1 && givenPosition<=length){
+			if(givenPosition>=1 && givenPosition<=nCards){
 				result = getNodeAt(givenPosition).data;
 			}
 		}
@@ -306,8 +306,8 @@ public class Pile
 		boolean result = false;
 		
 		if(!isEmpty()){
-			for(int i=1;i<=length;i++){
-				if(getEntry(i).equals(anEntry)){
+			for(int i=1;i<=nCards;i++){
+				if(getCard(i).equals(anEntry)){
 					result = true;
 					break;
 				}
@@ -330,9 +330,15 @@ public class Pile
 	 * 
 	 * @return int:	The number of entries currently in the Pile.
 	 *************************************************************/
-	public int getLength()
+	public int getNumberOfCards()
 	{
-		return length;
+		return nCards;
+	}
+	
+	
+	public Card getTopCard()
+	{
+		return topCard.data;
 	}
 	
 	
@@ -350,13 +356,13 @@ public class Pile
 	/**************************************************************************************
 	 * Returns whether or not the Pile is full.
 	 * 
-	 * @return boolean:	True if the Pile has reached its maximum length, false otherwise.
+	 * @return boolean:	True if the Pile has reached its maximum nCards, false otherwise.
 	 **************************************************************************************/
 	public boolean isFull()
 	{
 		boolean result = false;
 		
-		if(length==capacity){
+		if(nCards==capacity){
 			result = true;
 		}
 		
@@ -373,7 +379,7 @@ public class Pile
 	{
 		boolean result = false;
 		
-		if(length==0){
+		if(nCards==0){
 			result = true;
 		}
 		
@@ -387,8 +393,8 @@ public class Pile
 	public void display()
 	{
 		if(!isEmpty()){
-			for(int i=1;i<length+1;i++){
-				System.out.println("Entry "+i+": "+getEntry(i));
+			for(int i=1;i<nCards+1;i++){
+				System.out.println("Entry "+i+": "+getCard(i));
 			}
 		}else{
 			System.out.println("Pile is emtpy.");
@@ -398,18 +404,16 @@ public class Pile
 	}
 	
 	public void shuffle(){
-		Pile newPile = new Pile(length);
+		Pile newPile = new Pile(nCards);
 		
-		for(int i=1;i<=length;i++){
-			int rand = randInt(i,length);
-			Card card = getEntry(rand);
+		for(int i=1;i<=nCards;i++){
+			int rand = randInt(i,nCards);
+			Card card = getCard(rand);
 			newPile.add(card);
 		}
 		
-		newPile.display();
-		
-		for(int i=1;i<=length;i++){
-			replace(i,newPile.getEntry(i));
+		for(int i=1;i<=nCards;i++){
+			replace(i,newPile.getCard(i));
 		}
 	}
 	
