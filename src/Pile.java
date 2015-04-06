@@ -397,7 +397,7 @@ public class Pile
 				System.out.println("Card "+i+": "+getCard(i));
 			}
 		}else{
-			System.out.println("Pile is emtpy.");
+			System.out.println("Pile is empty.");
 		}
 		
 		System.out.println();
@@ -405,15 +405,16 @@ public class Pile
 	
 	public void shuffle(){
 		Pile newPile = new Pile(nCards);
+		int initialNumberOfCards = nCards;
 		
-		for(int i=1;i<=nCards;i++){
-			int rand = randInt(i,nCards);
-			Card card = getCard(rand);
-			newPile.add(card);
+		for(int i=1;i<=initialNumberOfCards;i++){
+			int rand = randInt(1,nCards);
+			newPile.add(getCard(rand));
+			remove(rand);
 		}
 		
-		for(int i=1;i<=nCards;i++){
-			replace(i,newPile.getCard(i));
+		for(int i=1;i<=newPile.getNumberOfCards();i++){
+			add(newPile.getCard(i));
 		}
 	}
 	
