@@ -5,6 +5,6 @@ public class Hand extends Pile
 	
 	Hand()
 	{
-		hand = new Pile(21);
+		this.setCapacity(21);
 	}
 }

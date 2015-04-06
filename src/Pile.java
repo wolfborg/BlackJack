@@ -338,7 +338,7 @@ public class Pile
 	
 	public Card getTopCard()
 	{
-		return topCard.data;
+		return getCard(1);
 	}
 	
 	
