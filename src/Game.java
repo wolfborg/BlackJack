@@ -106,15 +106,7 @@ public class Game
 		if(playerCard.getFace()){
 			playerHandValue += 10;
 		}else{
-			if(playerCard.getRankValue()==1){
-				if((player.getHand().getTotal()+11)<=21){
-					playerHandValue += 11;
-				}else{
-					playerHandValue += 1;
-				}
-			}else{
-				playerHandValue += playerCard.getRankValue();
-			}
+			playerHandValue += playerCard.getRankValue();
 		}
 		
 		player.getHand().setTotal(playerHandValue);
@@ -137,6 +129,10 @@ public class Game
 		player.getHand().add(card);
 		deck.remove(1);
 		
+		if(card.getRankValue()==1){
+			card.setRankValue(11);
+		}
+		
 		if(hidden==false){
 			player.getHand().getCard(player.getHand().getNumberOfCards()).setHidden(false);;
 		}
@@ -149,6 +145,18 @@ public class Game
 	public void hit(Player player)
 	{
 		draw(player,false);
+		
+		for(int i=1;i<=player.getHand().getNumberOfCards();i++){
+			if(isBust(player)){
+				System.out.println(player.getHand().getCard(i).getRankValue());
+				if((player.getHand().getCard(i).getRankValue())==11){
+					player.getHand().getCard(i).setRankValue(1);
+					player.getHand().setTotal(player.getHand().getTotal()-10);
+				}
+			}else{
+				break;
+			}
+		}
 		
 		if(!player.equals(dealer)){	
 			if(isBust(player)){

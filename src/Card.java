@@ -292,6 +292,11 @@ public class Card implements Comparable<Object>
 		return true;
 	}
 	
+	public void setRankValue(int newRankValue)
+	{
+		rankValue = newRankValue;
+	}
+	
 	public void setPrevious(Card newPrevious)
 	{
 		previous = newPrevious;
