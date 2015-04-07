@@ -6,6 +6,7 @@ public class Game
 	private Deck deck;
 	private Player player, dealer;
 	
+	
 	public static void main(String[] args)
 	{
 		System.out.print("Enter name: ");
@@ -27,10 +28,8 @@ public class Game
 		draw(player,false);
 		draw(dealer,false);
 		
-		if(((player.getHand().getCard(1).equals("JACK of SPADES"))&&
-		    (player.getHand().getCard(2).equals("ACE of SPADES")))||
-		   ((player.getHand().getCard(1).equals("ACE of SPADES"))&&
-			(player.getHand().getCard(2).equals("JACK of SPADES")))){
+		if((player.getHand().contains(new Card("JACK","SPADES")))&&
+		   (player.getHand().contains(new Card("ACE","SPADES")))){
 			System.out.println("BLACKJACK");
 			System.out.println(player.getName()+" WINS");
 			System.exit(0);
@@ -70,6 +69,7 @@ public class Game
 		}
 	}
 	
+	
 	public void playAgain()
 	{
 		System.out.print("Play Again?(y/n): ");
@@ -90,6 +90,7 @@ public class Game
 			playAgain();
 		}
 	}
+
 	
 	public void lose(Player player)
 	{
@@ -97,6 +98,7 @@ public class Game
 		System.out.println();
 		playAgain();
 	}
+	
 	
 	public int calculate(Player player)
 	{
@@ -113,6 +115,7 @@ public class Game
 		return player.getHand().getTotal();
 	}
 	
+	
 	public boolean isBust(Player player)
 	{
 		if((player.getHand().getTotal())>21){
@@ -121,6 +124,7 @@ public class Game
 		
 		return false;
 	}
+	
 	
 	public void draw(Player player, boolean hidden)
 	{
@@ -141,6 +145,7 @@ public class Game
 		
 		calculate(player);
 	}
+	
 	
 	public void hit(Player player)
 	{
@@ -176,6 +181,7 @@ public class Game
 		}
 	}
 	
+	
 	public void stand(Player player)
 	{
 		System.out.println(player.getName()+" stands.\n");
@@ -184,12 +190,14 @@ public class Game
 		System.out.println();
 	}
 	
+	
 	public void fold(Player player)
 	{
 		System.out.println(player.getName()+" folds.\n");
 		player.getHand().clear();
 		player.setTurn(false);
 	}
+	
 	
 	public void command(Player player)
 	{
@@ -212,6 +220,7 @@ public class Game
 		}
 	}
 	
+	
 	public void printHand(Player player)
 	{
 		System.out.println(player.getName()+"'s Hand:");
@@ -219,10 +228,12 @@ public class Game
 		System.out.println("Hand Value: "+player.getHand().getTotal()+"\n");
 	}
 	
+	
 	public Deck getDeck()
 	{
 		return deck;
 	}
+	
 	
 	public Player getDealer()
 	{
