@@ -1,3 +1,6 @@
+/**
+ * @author chaplind
+ */
 
 public class Player
 {

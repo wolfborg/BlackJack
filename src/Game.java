@@ -1,4 +1,9 @@
+
 import java.util.Scanner;
+
+/**
+ * @author chaplind
+ */
 
 public class Game
 {
